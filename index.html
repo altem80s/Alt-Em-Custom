@@ -31,15 +31,15 @@
         <div class="dress-scroll-sticky">
             <div class="dress-hero-state">
                 <h1 class="dress-hero-title">ALT<br>EM</h1>
-                <img class="dress-model dress-model-step1" src="step1.webp"
+                <img class="dress-model dress-model-step1" src="step1.png"
                      alt="Model wearing the complete white dress">
             </div>
 
             <div class="dress-product-state" aria-label="Featured dress">
                 <h2 class="dress-featured-title">Featured Product</h2>
-                <img class="dress-model dress-model-step3" src="step3.webp"
+                <img class="dress-model dress-model-step3" src="step3.png"
                      alt="Model after the white dress has been removed">
-                <img class="dress-floating" src="step2.webp"
+                <img class="dress-floating" src="step2.png"
                      alt="The white dress separated from the model">
 
                 <div class="dress-callout dress-callout-fur">
@@ -82,7 +82,6 @@
     }
 
     let ticking = false;
-
     const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 
     function updateDressScene() {
@@ -90,9 +89,12 @@
         const travel = Math.max(1, section.offsetHeight - window.innerHeight);
         const progress = clamp(-rect.top / travel);
 
+        // The original outfit disappears while the bodysuit version is revealed.
         const step1Opacity = 1 - clamp(progress / 0.38);
         const step3Opacity = clamp((progress - 0.12) / 0.32);
-        const productOpacity = clamp((progress - 0.22) / 0.38);
+
+        // The isolated dress appears over the model, then travels into its product position.
+        const productOpacity = clamp((progress - 0.20) / 0.40);
         const modelShift = progress * 13;
         const dressShiftX = progress * 10;
         const dressShiftY = progress * -18;
