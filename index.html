@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Alt Em Custom — leather, lace, and everything retro.">
-    <link rel="icon" type="image/png" href="LayLogoTB.png">
+    <link rel="icon" type="image/png" href="LayLogoTB.jpg">
     <link rel="stylesheet" href="styles.css">
     <title>Alt Em Custom | Home</title>
 </head>
 <body class="home-page">
 <header class="home-header">
     <a class="home-brand" href="index.html" aria-label="Alt Em Custom home">
-        <img src="LayLogoTB.png" alt="Alt Em Custom logo">
+        <img src="LayLogoTB.jpg" alt="Alt Em Custom logo">
     </a>
     <nav class="home-nav" aria-label="Main navigation">
         <a href="index.html" aria-current="page">Home</a>
@@ -61,7 +61,7 @@
 
 <footer class="site-footer noir">
     <div class="wrap">
-        <img src="LayLogoTB.png" alt="Alt Em Custom logo">
+        <img src="LayLogoTB.jpg" alt="Alt Em Custom logo">
         <p>Hand-sewn by Emma Shaw</p>
         <p>Leather, lace, and everything retro.</p>
     </div>
@@ -92,6 +92,8 @@
         const detailOpacity = clamp((progress - 0.58) / 0.24);
 
         stage.style.setProperty("--dress-shift-y", dressY + "vh");
+        stage.style.setProperty("--step3-opacity", 1 - detailOpacity);
+        stage.style.setProperty("--product-opacity", detailOpacity);
         stage.style.setProperty("--detail-opacity", detailOpacity);
         stage.style.setProperty("--hero-title-opacity", 1 - detailOpacity);
 
