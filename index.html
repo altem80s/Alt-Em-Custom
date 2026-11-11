@@ -95,10 +95,10 @@
 
         // The isolated dress appears over the model, then travels into its product position.
         const productOpacity = clamp((progress - 0.20) / 0.40);
-        const modelShift = progress * 13;
+        const modelShift = 0;
         const dressShiftX = progress * 10;
-        const dressShiftY = progress * -18;
-        const dressScale = 1 - progress * 0.24;
+        const dressShiftY = progress * 15;
+        const dressScale = 1 - progress * 0.36;
 
         stage.style.setProperty("--step1-opacity", step1Opacity);
         stage.style.setProperty("--step3-opacity", step3Opacity);
