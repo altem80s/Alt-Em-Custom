@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Alt Em Custom — leather, lace, and everything retro.">
-    <link rel="icon" type="image/png" href="LayLogoTB.jpg">
+    <link rel="icon" type="image/png" href="LayLogoTB.png">
     <link rel="stylesheet" href="styles.css">
     <title>Alt Em Custom | Home</title>
 </head>
 <body class="home-page">
 <header class="home-header">
     <a class="home-brand" href="index.html" aria-label="Alt Em Custom home">
-        <img src="LayLogoTB.jpg" alt="Alt Em Custom logo">
+        <img src="LayLogoTB.png" alt="Alt Em Custom logo">
     </a>
     <nav class="home-nav" aria-label="Main navigation">
         <a href="index.html" aria-current="page">Home</a>
@@ -31,12 +31,14 @@
         <div class="dress-scroll-sticky">
             <div class="dress-hero-state">
                 <h1 class="dress-hero-title">ALT<br>EM</h1>
-                <img class="dress-model dress-model-step3" src="step3.png"
-                     alt="Model wearing a black bodysuit">
+                <img class="dress-model dress-model-step1" src="step1.png"
+                     alt="Model wearing the complete white dress">
             </div>
 
             <div class="dress-product-state" aria-label="Featured dress">
                 <h2 class="dress-featured-title">Featured Product</h2>
+                <img class="dress-model dress-model-step3" src="step3.png"
+                     alt="Model after the white dress has been removed">
                 <img class="dress-floating" src="step2.png"
                      alt="The white dress separated from the model">
 
@@ -61,7 +63,7 @@
 
 <footer class="site-footer noir">
     <div class="wrap">
-        <img src="LayLogoTB.jpg" alt="Alt Em Custom logo">
+        <img src="LayLogoTB.png" alt="Alt Em Custom logo">
         <p>Hand-sewn by Emma Shaw</p>
         <p>Leather, lace, and everything retro.</p>
     </div>
@@ -80,22 +82,33 @@
     }
 
     let ticking = false;
-    const clamp = (value) => Math.min(1, Math.max(0, value));
+    const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 
     function updateDressScene() {
         const rect = section.getBoundingClientRect();
         const travel = Math.max(1, section.offsetHeight - window.innerHeight);
         const progress = clamp(-rect.top / travel);
 
-        // The model never moves or resizes. Only the dress travels straight down.
-        const dressY = progress * 48;
-        const detailOpacity = clamp((progress - 0.58) / 0.24);
+        // The original outfit disappears while the bodysuit version is revealed.
+        const step1Opacity = 1 - clamp(progress / 0.38);
+        const step3Opacity = clamp((progress - 0.12) / 0.32);
 
-        stage.style.setProperty("--dress-shift-y", dressY + "vh");
-        stage.style.setProperty("--step3-opacity", 1 - detailOpacity);
-        stage.style.setProperty("--product-opacity", detailOpacity);
-        stage.style.setProperty("--detail-opacity", detailOpacity);
-        stage.style.setProperty("--hero-title-opacity", 1 - detailOpacity);
+        // The isolated dress appears over the model, then travels into its product position.
+        const productOpacity = clamp((progress - 0.20) / 0.40);
+        const modelShift = progress * 13;
+        const dressShiftX = progress * 10;
+        const dressShiftY = progress * -18;
+        const dressScale = 1 - progress * 0.24;
+
+        stage.style.setProperty("--step1-opacity", step1Opacity);
+        stage.style.setProperty("--step3-opacity", step3Opacity);
+        stage.style.setProperty("--product-opacity", productOpacity);
+        stage.style.setProperty("--model-shift", modelShift + "vw");
+        stage.style.setProperty("--dress-shift-x", dressShiftX + "vw");
+        stage.style.setProperty("--dress-shift-y", dressShiftY + "vh");
+        stage.style.setProperty("--dress-scale", dressScale);
+        stage.style.setProperty("--hero-title-opacity", 1 - productOpacity);
+        stage.style.setProperty("--hint-opacity", 1 - clamp(progress * 3));
 
         ticking = false;
     }
