@@ -1240,3 +1240,63 @@ section {
         transform: translateX(-50%) translateY(-18vh) scale(0.76);
     }
 }
+
+
+/* Final tuning for the scroll-linked dress reveal */
+.dress-scroll {
+    height: 250vh;
+}
+
+.dress-scroll-sticky {
+    isolation: isolate;
+}
+
+.dress-model-step1,
+.dress-model-step3,
+.dress-floating {
+    will-change: opacity, transform;
+}
+
+.dress-model-step1 {
+    transition: opacity 80ms linear;
+}
+
+.dress-model-step3,
+.dress-floating,
+.dress-product-state {
+    transition: none;
+}
+
+@media (max-width: 700px) {
+    .dress-scroll {
+        height: 220vh;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dress-scroll {
+        height: auto;
+    }
+
+    .dress-scroll-sticky {
+        position: relative;
+        height: 100svh;
+    }
+
+    .dress-hero-state {
+        display: none;
+    }
+
+    .dress-product-state {
+        opacity: 1;
+    }
+
+    .dress-model-step3 {
+        opacity: 1;
+        transform: translateX(calc(-50% - 13vw));
+    }
+
+    .dress-floating {
+        transform: translateX(calc(-50% + 10vw)) translateY(-18vh) scale(0.76);
+    }
+}
