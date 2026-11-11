@@ -1300,3 +1300,137 @@ section {
         transform: translateX(calc(-50% + 10vw)) translateY(-18vh) scale(0.76);
     }
 }
+
+
+/* Homepage static layout refinements */
+.home-hero {
+    min-height: min(760px, calc(100vh - 20px));
+}
+
+.home-walker {
+    inset: 76px 0 0;
+}
+
+.home-walker img {
+    height: 98%;
+    max-height: 700px;
+    max-width: 58%;
+}
+
+.home-scroll-mark {
+    height: 66px;
+}
+
+.featured-product {
+    min-height: 455px;
+    padding: 12px 10px 24px;
+}
+
+.coat-stage {
+    width: min(760px, 90%);
+    height: 390px;
+    margin: -2px auto 0;
+}
+
+.featured-coat {
+    height: 100%;
+    width: 43%;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    object-fit: contain;
+    object-position: center top;
+}
+
+.coat-callout {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    z-index: 2;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.coat-callout i {
+    display: block;
+    height: 3px;
+    width: 55px;
+    background: #050505;
+}
+
+.callout-fur { top: 14%; left: 15%; }
+.callout-wool { top: 41%; right: 15%; }
+.callout-handmade { top: 72%; left: 15%; }
+
+.coat-actions {
+    position: absolute;
+    right: 11%;
+    bottom: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.coat-actions a {
+    min-width: 114px;
+    padding: 5px 13px;
+    border: 1px solid #111;
+    color: #111;
+    background: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.coat-actions a:hover {
+    color: #fff;
+    background: #111;
+}
+
+@media (max-width: 700px) {
+    .home-hero {
+        min-height: 650px;
+    }
+
+    .home-walker {
+        inset: 82px 0 0;
+        justify-content: flex-end;
+    }
+
+    .home-walker img {
+        height: 86%;
+        max-width: 82%;
+    }
+
+    .featured-product {
+        min-height: 520px;
+    }
+
+    .coat-stage {
+        width: 100%;
+        height: 440px;
+        margin-top: 12px;
+    }
+
+    .featured-coat {
+        width: 62%;
+        height: 78%;
+        top: 8%;
+    }
+
+    .coat-callout {
+        gap: 5px;
+        font-size: 0.72rem;
+    }
+
+    .coat-callout i { width: 22px; }
+    .callout-fur { left: 1%; top: 13%; }
+    .callout-wool { right: 1%; top: 43%; }
+    .callout-handmade { left: 1%; top: 72%; }
+
+    .coat-actions {
+        right: 2%;
+        bottom: 5%;
+    }
+}
