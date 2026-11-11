@@ -5,115 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Alt Em Custom — leather, lace, and everything retro.">
 
-    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="icon" type="image/png" href="LayLogoTB.png">
     <link rel="stylesheet" href="styles.css">
 
     <title>Alt Em Custom | Home</title>
 </head>
 
-<body>
+<body class="home-page">
 
-<header class="site-header">
-    <div class="wrap">
-        <a class="brand" href="index.html">
-            <img src="logo.png" alt="Alt Em Custom logo" style="width:100px; height: auto;">
-        </a>
+<header class="home-header">
+    <a class="home-brand" href="index.html" aria-label="Alt Em Custom home">
+        <img src="LayLogoTB.png" alt="Alt Em Custom logo">
+    </a>
 
-        <nav class="nav" aria-label="Main navigation">
-            <a href="index.html" aria-current="page">Home</a>
-            <a href="shop.html">Shop</a>
-            <a href="portfolio.html">Portfolio</a>
-        </nav>
+    <nav class="home-nav" aria-label="Main navigation">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="patterns.html">Portfolio</a>
+    </nav>
+
+    <div class="home-header-icons" aria-hidden="true">
+        <span class="header-icon header-search"></span>
+        <span class="header-icon header-account"></span>
+        <span class="header-icon header-bag"></span>
     </div>
 </header>
 
 <main>
+    <!-- FIRST SCREEN: WALKER + ALT EM -->
+    <section class="home-hero" aria-label="Alt Em Custom introduction">
+        <h1 class="home-hero-title">ALT<br>EM</h1>
 
-    <section class="hero">
-        <div class="wrap">
-
-            <div class="hero-copy">
-        
-                <h1>Shop Alt Em</h1>
-
-                <p class="lede">
-                    Patterns and tutorials made for beginners.
-                </p>
-
-                <div class="actions">
-                    <a class="btn" href="patterns.html">Shop Patterns</a>
-                    <a class="btn alt" href="shop.html">Shop Finished Pieces</a>
-                </div>
-            </div>
-
-            <div class="flight-scene" aria-label="An illustrated pin-up aviator flies across the page">
-
-                <!-- Clouds visible at the beginning of the flight -->
-                <svg class="cloud cloud-one" viewBox="0 0 150 76" aria-hidden="true">
-                    <path d="M18 59C2 55 3 32 21 28c3-22 32-29 48-12 14-15 43-8 48 12 22-1 31 26 14 35-9 5-97 4-113-4Z"/>
-                </svg>
-
-                <svg class="cloud cloud-two" viewBox="0 0 150 76" aria-hidden="true">
-                    <path d="M18 59C2 55 3 32 21 28c3-22 32-29 48-12 14-15 43-8 48 12 22-1 31 26 14 35-9 5-97 4-113-4Z"/>
-                </svg>
-
-                <img
-                    class="hero-plane"
-                    src="bomberem.jpeg"
-                    alt="Pin-up bomber girl sitting on an airplane"
-                >
-
-            </div>
+        <div class="home-walker">
+            <img src="Walker.png" alt="Model walking in a vintage-inspired outfit">
         </div>
     </section>
 
-    <!-- POLKA DOT DIVIDER -->
-    <div class="dots" aria-hidden="true"></div>
+    <div class="home-scroll-mark" aria-hidden="true">
+        <span></span>
+    </div>
 
-    <!-- HOMEPAGE FEATURE LINKS -->
-    <section>
-        <div class="wrap">
+    <!-- SECOND SCREEN: FEATURED COAT -->
+    <section class="featured-product" aria-labelledby="featured-title">
+        <h2 id="featured-title">Featured Product</h2>
 
-            <div class="section-head">
-                <h2>Make it yours</h2>
-                <p>Discover handmade pieces and inspiration from the workroom.</p>
+        <div class="coat-stage">
+            <img class="featured-coat" src="coat.png" alt="White handmade coat with a fur collar and cuffs">
+
+            <div class="coat-callout callout-fur">
+                <span>Ethically sourced fur</span>
+                <i></i>
             </div>
 
-            <div class="feature-grid">
+            <div class="coat-callout callout-wool">
+                <i></i>
+                <span>High quality wool</span>
+            </div>
 
-                <a class="feature-card" href="shop.html">
-                    <h3>The Shop</h3>
-                    <p>Browse handmade pieces and sewing patterns.</p>
-                    <b>Shop now ↗</b>
-                </a>
+            <div class="coat-callout callout-handmade">
+                <span>Handmade locally</span>
+                <i></i>
+            </div>
 
-                <a class="feature-card" href="portfolio.html">
-                    <h3>The Portfolio</h3>
-                    <p>See custom creations and finished projects.</p>
-                    <b>See the work ↗</b>
-                </a>
-
+            <div class="coat-actions">
+                <a href="patterns.html">Make This</a>
+                <a href="shop.html">Buy This</a>
             </div>
         </div>
     </section>
-
-    <!-- BRAND MESSAGE -->
-    <section class="noir cta">
-        <div class="wrap">
-            <h2>Made by hand. Made to stand out.</h2>
-            <p>
-                Alt Em Custom celebrates leather, lace, vintage silhouettes,
-                pin-up art, and personal style.
-            </p>
-        </div>
-    </section>
-
 </main>
 
-<!-- FOOTER -->
 <footer class="site-footer noir">
     <div class="wrap">
-        <img src="logo.png" alt="Alt Em Custom logo">
+        <img src="LayLogoTB.png" alt="Alt Em Custom logo">
         <p>Hand-sewn by Emma Shaw</p>
         <p>Leather, lace, and everything retro.</p>
     </div>
