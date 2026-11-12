@@ -20,10 +20,12 @@
         <a href="shop.html" aria-current="page">Shop</a>
         <a href="patterns.html">Patterns</a>
     </nav>
-    <div class="home-header-icons" aria-hidden="true">
-        <span class="header-icon header-search"></span>
-        <span class="header-icon header-account"></span>
-        <span class="header-icon header-bag"></span>
+    <div class="home-header-icons">
+        <span class="header-icon header-search" aria-hidden="true"></span>
+        <span class="header-icon header-account" aria-hidden="true"></span>
+        <button class="header-icon header-bag cart-open" type="button" data-cart-open aria-label="Open shopping cart">
+            <span class="cart-count" data-cart-count hidden>0</span>
+        </button>
     </div>
 </header>
 
@@ -49,73 +51,13 @@
 
             <div class="section-head">
                 <h2>Featured pieces</h2>
-                <p>Product photos and checkout links will be added as each listing is ready.</p>
+                <p>Browse the Alt Em collection and add available pieces to your bag.</p>
             </div>
-
-            <div class="grid">
-
-                <article class="card">
-                    <div class="product-placeholder" aria-hidden="true">Alt Em Custom</div>
-                    <div class="card-body">
-                        <h3>Studded leather moto vest</h3>
-                        <p>Black leather, silver studs, fully lined.</p>
-                        <span class="price">$140</span>
-                        <span class="coming-soon">Coming soon</span>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <div class="product-placeholder" aria-hidden="true">Alt Em Custom</div>
-                    <div class="card-body">
-                        <h3>Lace babydoll corset top</h3>
-                        <p>Boned bodice with a black lace overlay.</p>
-                        <span class="price">$85</span>
-                        <span class="coming-soon">Coming soon</span>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <div class="product-placeholder" aria-hidden="true">Alt Em Custom</div>
-                    <div class="card-body">
-                        <h3>Polka dot wiggle skirt</h3>
-                        <p>High waist, fitted through the hip, with a back kick pleat.</p>
-                        <span class="price">$70</span>
-                        <span class="coming-soon">Coming soon</span>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <div class="product-placeholder" aria-hidden="true">Alt Em Custom</div>
-                    <div class="card-body">
-                        <h3>Glam rock flare pants</h3>
-                        <p>Stretch satin with a bell hem and a high rise.</p>
-                        <span class="price">$110</span>
-                        <span class="coming-soon">Coming soon</span>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <div class="product-placeholder" aria-hidden="true">Alt Em Custom</div>
-                    <div class="card-body">
-                        <h3>Satin bomber jacket</h3>
-                        <p>Quilted lining, ribbed cuffs, and a bold back panel.</p>
-                        <span class="price">$165</span>
-                        <span class="coming-soon">Coming soon</span>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <div class="product-placeholder" aria-hidden="true">Alt Em Custom</div>
-                    <div class="card-body">
-                        <h3>Fringe leather bolero</h3>
-                        <p>Cropped, with long swinging fringe.</p>
-                        <span class="price">$120</span>
-                        <span class="coming-soon">Coming soon</span>
-                    </div>
-                </article>
-
+            <p class="store-notice" data-store-notice role="status" hidden></p>
+            <div class="grid" id="product-grid" aria-live="polite">
+                <p class="store-empty">Loading the shop catalogue…</p>
             </div>
-        </div>
+</div>
     </section>
 
 </main>
@@ -127,5 +69,24 @@
     </div>
 </footer>
 
+
+<div class="cart-overlay" data-cart-overlay hidden></div>
+<aside class="cart-drawer" data-cart-drawer hidden role="dialog" aria-modal="true" aria-labelledby="cart-title">
+  <div class="cart-drawer-head">
+    <h2 id="cart-title">Your bag</h2>
+    <button class="cart-close" type="button" data-cart-close aria-label="Close shopping cart">×</button>
+  </div>
+  <div class="cart-items" data-cart-items>
+    <p class="cart-empty">Your bag is empty.</p>
+  </div>
+  <div class="cart-summary">
+    <div class="cart-total-row"><strong>Subtotal</strong><strong data-cart-total>$0.00</strong></div>
+    <p>Shipping and any applicable taxes are calculated securely at checkout.</p>
+    <button class="btn cart-checkout" type="button" data-checkout disabled>Checkout securely</button>
+    <p class="cart-feedback" data-cart-feedback role="status"></p>
+  </div>
+</aside>
+
+<script src="store.js" defer></script>
 </body>
 </html>
