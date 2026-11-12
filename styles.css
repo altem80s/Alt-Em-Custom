@@ -228,3 +228,6 @@ section { padding: 3.5rem 0; }
   .featured-pattern-layout { grid-template-columns: 1fr; gap: 2rem; }
   .featured-pattern-image { max-width: 560px; margin-inline: auto; }
 }
+
+.page-intro .lede p { margin: 0 0 1rem; }
+.page-intro .lede p:last-child { margin-bottom: 0; }
