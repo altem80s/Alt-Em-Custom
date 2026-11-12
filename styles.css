@@ -120,10 +120,10 @@ section { padding: 3.5rem 0; }
 .home-walker img { display: block; width: auto; height: 98%; max-width: 58%; max-height: 700px; object-fit: contain; object-position: center bottom; }
 .home-scroll-mark { display: none; }
 
-.featured-product { position: relative; width: calc(100% - 36px); min-height: 455px; margin: 0 18px 28px; padding: 12px 10px 24px; overflow: hidden; background: #fff; border: 1px solid #d0d0d0; }
+.featured-product { position: relative; width: calc(100% - 36px); min-height: 82vh; margin: 0 18px 28px; padding: 12px 10px 24px; overflow: hidden; background: #fff; border: 1px solid #d0d0d0; }
 .featured-product h2 { position: relative; z-index: 2; margin: 0; font-family: Georgia,"Times New Roman",serif; font-size: 1.55rem; font-style: italic; font-weight: 400; line-height: 1.3; }
-.coat-stage { position: relative; width: min(760px,90%); height: 390px; margin: -2px auto 0; }
-.featured-coat { position: absolute; top: 0; left: 50%; height: 100%; width: 43%; transform: translateX(-50%); object-fit: contain; object-position: center top; }
+.coat-stage { position: relative; width: min(1100px,94%); height: clamp(520px,68vh,720px); margin: -2px auto 0; }
+.featured-coat { position: absolute; top: 0; left: 50%; height: 100%; width: 58%; transform: translateX(-50%); object-fit: contain; object-position: center top; }
 .coat-callout { position: absolute; display: flex; align-items: center; gap: 9px; z-index: 2; font-size: .95rem; white-space: nowrap; }
 .coat-callout i { display: block; height: 3px; width: 55px; background: #050505; }
 .callout-fur { top: 14%; left: 27%; }
