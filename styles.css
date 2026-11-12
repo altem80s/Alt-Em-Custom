@@ -248,9 +248,10 @@ section { padding: 3.5rem 0; }
     min-width: 0;
 }
 .page-intro-art img {
+    display: block;
     width: 100%;
-    max-width: 440px;
-    max-height: 460px;
+    max-width: 320px;
+    max-height: 360px;
     height: auto;
     object-fit: contain;
 }
