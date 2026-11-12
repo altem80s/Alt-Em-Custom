@@ -3,7 +3,15 @@
 
   const API = "https://api.altemcustom.com/api";
   const CART_KEY = "alt-em-cart-v1";
-  let products = [];
+  const DRAFT_PRODUCTS = [
+    { id: "studded-leather-moto-vest", name: "Studded leather moto vest", description: "Black leather, silver studs, fully lined.", kind: "physical", available: false },
+    { id: "lace-babydoll-corset-top", name: "Lace babydoll corset top", description: "Boned bodice with a black lace overlay.", kind: "physical", available: false },
+    { id: "polka-dot-wiggle-skirt", name: "Polka dot wiggle skirt", description: "High waist, fitted through the hip, with a back kick pleat.", kind: "physical", available: false },
+    { id: "glam-rock-flare-pants", name: "Glam rock flare pants", description: "Stretch satin with a bell hem and a high rise.", kind: "physical", available: false },
+    { id: "satin-bomber-jacket", name: "Satin bomber jacket", description: "Quilted lining, ribbed cuffs, and a bold back panel.", kind: "physical", available: false },
+    { id: "fringe-leather-bolero", name: "Fringe leather bolero", description: "Cropped, with long swinging fringe.", kind: "physical", available: false }
+  ];
+  let products = DRAFT_PRODUCTS;
   let cart = readCart();
 
   function readCart() {
@@ -296,11 +304,12 @@
       renderShop();
       renderCart();
     } catch (_) {
-      const grid = document.querySelector("#product-grid");
+      products = DRAFT_PRODUCTS;
+      renderShop();
+      renderCart();
       const notice = document.querySelector("[data-store-notice]");
-      if (grid) grid.innerHTML = '<p class="store-empty">The shop service is not connected yet.</p>';
       if (notice) {
-        notice.textContent = "The secure shop service is waiting for its Cloudflare Worker setup.";
+        notice.textContent = "The secure shop service is waiting for its Cloudflare Worker setup. Products will be purchasable after live Stripe prices and shipping are configured.";
         notice.hidden = false;
       }
     }
