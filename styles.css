@@ -1,12 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&family=Dancing+Script:wght@600&display=swap");
+
 
 :root {
     --ink: #000;
     --paper: #fff;
     --smoke: #efefef;
     --ash: #555;
-    --script: "Dancing Script", "Brush Script MT", cursive;
-    --body: "Josefin Sans", "Gill Sans", "Trebuchet MS", sans-serif;
+    --script: Georgia, "Times New Roman", serif;
+    --body: Georgia, "Times New Roman", serif;
     --dots: radial-gradient(circle, #000 3.5px, transparent 4px);
 }
 
