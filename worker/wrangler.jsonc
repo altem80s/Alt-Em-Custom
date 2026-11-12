@@ -12,7 +12,7 @@
   ],
   "vars": {
     "SITE_URL": "https://altemcustom.com",
-    "ALLOWED_ORIGINS": "https://altemcustom.com,https://www.altemcustom.com",
+    "ALLOWED_ORIGINS": "https://altemcustom.com,https://www.altemcustom.com,https://altem80s.github.io",
     "SHIPPING_COUNTRIES": "US",
     "ENABLE_AUTOMATIC_TAX": "false"
   },
