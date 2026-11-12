@@ -347,11 +347,6 @@ async function verifyDownloadToken(token, env) {
 }
 
 async function sendDigitalPurchaseEmail(env, session) {
-  if (!env.RESEND_API_KEY || !env.EMAIL_FROM || !env.DOWNLOAD_LINK_SECRET) {
-    throw new Error("Resend sender and download-link secrets must be configured.");
-  }
-  const email = session.customer_details && session.customer_details.email;
-  if (!email) throw new Error("Stripe checkout did not provide a customer email address.");
   const lines = await sessionLineItems(env, session);
   const digitalItems = lines.map((line) => {
     const priceId = typeof line.price === "object" ? line.price.id : line.price;
@@ -359,13 +354,18 @@ async function sendDigitalPurchaseEmail(env, session) {
     return product && product.kind === "digital" && product.downloadKey ? product : null;
   }).filter(Boolean);
   if (!digitalItems.length) return false;
+  if (!env.RESEND_API_KEY || !env.EMAIL_FROM || !env.DOWNLOAD_LINK_SECRET) {
+    throw new Error("Resend sender and download-link secrets must be configured.");
+  }
+  const email = session.customer_details && session.customer_details.email;
+  if (!email) throw new Error("Stripe checkout did not provide a customer email address.");
 
   const links = [];
   for (const product of digitalItems) {
     const token = await createDownloadToken(session.id, product.id, env);
     links.push({
       name: product.name,
-      url: siteUrl(env).replace("https://altemcustom.com", "https://api.altemcustom.com") +
+      url: (env.API_URL || "https://api.altemcustom.com").replace(/\\/+$/, "") +
         "/api/download?token=" + encodeURIComponent(token)
     });
   }
