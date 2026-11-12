@@ -29,8 +29,7 @@
   ],
   "secrets": {
     "required": [
-      "STRIPE_SECRET_KEY",
-      "STRIPE_WEBHOOK_SECRET"
+      "STRIPE_SECRET_KEY"
     ]
   }
 }
