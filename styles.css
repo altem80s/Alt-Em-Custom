@@ -92,9 +92,9 @@ section { padding: 3.5rem 0; }
 .portfolio-note { text-align: center; margin: 4rem auto 0; padding: 2rem; border: 3px solid; max-width: 760px; }
 .noir { background: var(--ink); color: var(--paper); }
 .cta { text-align: center; }
-.site-footer { padding: 2.5rem 0; }
+.site-footer { padding: 2.5rem 0; border: 0; border-top: 0; }
 .site-footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; }
-.site-footer img { width: 64px; height: 64px; object-fit: contain; background: var(--paper); }
+.site-footer img { width: 100px; height: 100px; object-fit: contain; background: var(--paper); border: 0; }
 
 /* Homepage and shared navigation */
 .home-page { background: #f7f8fb; color: #050505; font-family: Georgia,"Times New Roman",serif; overflow-x: hidden; }
