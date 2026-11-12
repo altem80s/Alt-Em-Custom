@@ -357,7 +357,11 @@ export default {
       if (Number(request.headers.get("Content-Length") || 0) > 12000) {
         return response(request, env, { error: "Cart request is too large." }, 413);
       }
-      return createCheckout(request, env);
+      try {
+        return await createCheckout(request, env);
+      } catch (_) {
+        return response(request, env, { error: "Checkout is temporarily unavailable. Please try again later." }, 503);
+      }
     }
     if (path === "/api/order" && request.method === "GET") {
       return getOrder(request, env, url);
