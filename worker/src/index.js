@@ -135,30 +135,22 @@ async function createCheckout(request, env) {
   }
 
   const params = new URLSearchParams();
+  params.set("ui_mode", "hosted_page");
   params.set("mode", "payment");
   params.set("success_url", siteUrl(env) + "/success.html?session_id={CHECKOUT_SESSION_ID}");
   params.set("cancel_url", siteUrl(env) + "/shop.html?checkout=cancel");
-  params.set("allow_promotion_codes", "true");
   params.set("billing_address_collection", "auto");
-  params.set("client_reference_id", crypto.randomUUID());
-  params.set("metadata[store]", "Alt Em Custom");
+  params.set("phone_number_collection[enabled]", "false");
+  params.set("automatic_tax[enabled]", "false");
+  params.set("allow_promotion_codes", "false");
+  params.set("submit_type", "auto");
+  params.set("integration_identifier", "hosted_web_0001");
+  params.set("origin_context", "web");
 
   selected.forEach((item, index) => {
     params.set("line_items[" + index + "][price]", item.product.priceId);
     params.set("line_items[" + index + "][quantity]", String(item.quantity));
   });
-
-  if (hasPhysical) {
-    const countries = (env.SHIPPING_COUNTRIES || "US").split(",").map((value) => value.trim()).filter(Boolean);
-    countries.forEach((country, index) => {
-      params.set("shipping_address_collection[allowed_countries][" + index + "]", country);
-    });
-    params.set("shipping_options[0][shipping_rate]", env.SHIPPING_RATE_ID);
-  }
-
-  if (env.ENABLE_AUTOMATIC_TAX === "true") {
-    params.set("automatic_tax[enabled]", "true");
-  }
 
   try {
     const session = await stripeRequest(env, "/checkout/sessions", {
