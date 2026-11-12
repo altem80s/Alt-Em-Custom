@@ -122,6 +122,11 @@ async function createCheckout(request, env) {
     selected.push({ product, price, quantity });
   }
 
+  const currencies = new Set(selected.map((item) => item.price.currency));
+  if (currencies.size !== 1) {
+    return response(request, env, { error: "All items in one order must use the same currency." }, 400);
+  }
+
   const hasPhysical = selected.some((item) => item.product.kind === "physical");
   if (hasPhysical && !env.SHIPPING_RATE_ID) {
     return response(request, env, {
