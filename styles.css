@@ -127,9 +127,9 @@ section { padding: 3.5rem 0; }
 .coat-callout { position: absolute; display: flex; align-items: center; gap: 9px; z-index: 2; font-size: .95rem; white-space: nowrap; }
 .coat-callout i { display: block; height: 3px; width: 55px; background: #050505; }
 .callout-fur { top: 14%; left: 27%; }
-.callout-wool { top: 41%; right: 27%; }
+.callout-wool { top: 41%; right: 18%; }
 .callout-handmade { top: 72%; left: 27%; }
-.coat-actions { position: absolute; right: 11%; bottom: 20%; display: flex; flex-direction: column; gap: 7px; }
+.coat-actions { position: absolute; right: 20%; bottom: 20%; display: flex; flex-direction: column; gap: 7px; }
 .coat-actions a { min-width: 114px; padding: 5px 13px; border: 1px solid #111; color: #111; background: #fff; text-align: center; text-decoration: none; font-size: 1rem; }
 .coat-actions a:hover { color: #fff; background: #111; }
 .home-page .site-footer img { object-fit: contain; }
