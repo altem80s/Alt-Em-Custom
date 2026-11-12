@@ -297,6 +297,112 @@ async function verifyWebhookSignature(rawBody, signatureHeader, secret) {
   });
 }
 
+function base64UrlEncode(bytes) {
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary).replace(/=/g, "").replace(/\\+/g, "-").replace(/\\//g, "_");
+}
+
+function base64UrlDecode(value) {
+  const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = normalized + "=".repeat((4 - normalized.length % 4) % 4);
+  const binary = atob(padded);
+  return Uint8Array.from(binary, (char) => char.charCodeAt(0));
+}
+
+async function signDownloadPayload(payload, secret) {
+  const key = await crypto.subtle.importKey(
+    "raw", new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(payload));
+  return base64UrlEncode(new Uint8Array(signature));
+}
+
+async function createDownloadToken(sessionId, productId, env) {
+  if (!env.DOWNLOAD_LINK_SECRET) throw new Error("Download link signing is not configured.");
+  const payload = base64UrlEncode(new TextEncoder().encode(JSON.stringify({
+    session_id: sessionId,
+    product_id: productId,
+    expires: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60
+  })));
+  return payload + "." + await signDownloadPayload(payload, env.DOWNLOAD_LINK_SECRET);
+}
+
+async function verifyDownloadToken(token, env) {
+  if (!env.DOWNLOAD_LINK_SECRET || typeof token !== "string" || token.length > 2000) return null;
+  const parts = token.split(".");
+  if (parts.length !== 2) return null;
+  const expected = await signDownloadPayload(parts[0], env.DOWNLOAD_LINK_SECRET);
+  if (expected.length !== parts[1].length) return null;
+  let mismatch = 0;
+  for (let i = 0; i < expected.length; i += 1) mismatch |= expected.charCodeAt(i) ^ parts[1].charCodeAt(i);
+  if (mismatch !== 0) return null;
+  try {
+    const data = JSON.parse(new TextDecoder().decode(base64UrlDecode(parts[0])));
+    if (!validSessionId(data.session_id) || typeof data.product_id !== "string" ||
+        !Number.isInteger(data.expires) || data.expires < Math.floor(Date.now() / 1000)) return null;
+    return data;
+  } catch (_) { return null; }
+}
+
+async function sendDigitalPurchaseEmail(env, session) {
+  if (!env.RESEND_API_KEY || !env.EMAIL_FROM || !env.DOWNLOAD_LINK_SECRET) {
+    throw new Error("Resend sender and download-link secrets must be configured.");
+  }
+  const email = session.customer_details && session.customer_details.email;
+  if (!email) throw new Error("Stripe checkout did not provide a customer email address.");
+  const lines = await sessionLineItems(env, session);
+  const digitalItems = lines.map((line) => {
+    const priceId = typeof line.price === "object" ? line.price.id : line.price;
+    const product = PRODUCTS.find((item) => item.priceId === priceId);
+    return product && product.kind === "digital" && product.downloadKey ? product : null;
+  }).filter(Boolean);
+  if (!digitalItems.length) return false;
+
+  const links = [];
+  for (const product of digitalItems) {
+    const token = await createDownloadToken(session.id, product.id, env);
+    links.push({
+      name: product.name,
+      url: siteUrl(env).replace("https://altemcustom.com", "https://api.altemcustom.com") +
+        "/api/download?token=" + encodeURIComponent(token)
+    });
+  }
+  const htmlLinks = links.map((item) =>
+    '<p style="margin:24px 0"><a href="' + item.url +
+    '" style="display:inline-block;background:#111;color:#fff;padding:14px 22px;text-decoration:none;font-weight:700">Download ' +
+    cleanText(item.name, 120) + '</a></p>'
+  ).join("");
+  const textLinks = links.map((item) => item.name + ": " + item.url).join("\\n");
+  const body = {
+    from: env.EMAIL_FROM,
+    to: [email],
+    subject: "Your Alt Em Custom pattern is ready",
+    html: '<div style="max-width:600px;margin:auto;padding:32px 20px;font-family:Arial,sans-serif;color:#171717">' +
+      '<h1 style="letter-spacing:2px">ALT EM CUSTOM</h1><h2>Thank you for your purchase!</h2>' +
+      '<p>Your payment is confirmed and your digital pattern is ready to download.</p>' +
+      htmlLinks +
+      '<p style="color:#666;font-size:13px">These secure download links expire in 7 days. If you need a fresh link, reply to this email and we will help.</p>' +
+      '</div>',
+    text: "Thank you for your Alt Em Custom purchase!\\n\\nYour downloads (links expire in 7 days):\\n" + textLinks
+  };
+  const sent = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer " + env.RESEND_API_KEY,
+      "Content-Type": "application/json",
+      "Idempotency-Key": "digital-order-" + session.id
+    },
+    body: JSON.stringify(body)
+  });
+  if (!sent.ok) {
+    const detail = await sent.json().catch(() => ({}));
+    throw new Error(detail.message || "Resend could not send the purchase email.");
+  }
+  return true;
+}
+
 async function stripeWebhook(request, env) {
   const rawBody = await request.text();
   const signature = request.headers.get("Stripe-Signature");
@@ -309,18 +415,28 @@ async function stripeWebhook(request, env) {
   }
 
   if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") {
-    const session = event.data && event.data.object;
-    if (session && session.id && session.payment_status === "paid" && env.ORDERS) {
-      const record = {
-        session_id: session.id,
-        payment_status: "paid",
-        amount_total: session.amount_total || 0,
-        currency: session.currency || "usd",
-        stripe_event_id: event.id,
-        created: event.created || Math.floor(Date.now() / 1000)
-      };
-      await env.ORDERS.put("order:" + session.id, JSON.stringify(record), { expirationTtl: 60 * 60 * 24 * 180 });
-      await env.ORDERS.put("event:" + event.id, "received", { expirationTtl: 60 * 60 * 24 * 180 });
+    const eventSession = event.data && event.data.object;
+    if (eventSession && eventSession.id && eventSession.payment_status === "paid") {
+      if (env.ORDERS && await env.ORDERS.get("event:" + event.id)) {
+        return new Response(JSON.stringify({ received: true, duplicate: true }), {
+          status: 200, headers: { "Content-Type": "application/json" }
+        });
+      }
+      const session = await retrieveSession(env, eventSession.id);
+      const emailed = await sendDigitalPurchaseEmail(env, session);
+      if (env.ORDERS) {
+        const record = {
+          session_id: session.id,
+          payment_status: "paid",
+          amount_total: session.amount_total || 0,
+          currency: session.currency || "usd",
+          stripe_event_id: event.id,
+          digital_email_sent: emailed,
+          created: event.created || Math.floor(Date.now() / 1000)
+        };
+        await env.ORDERS.put("order:" + session.id, JSON.stringify(record), { expirationTtl: 60 * 60 * 24 * 180 });
+        await env.ORDERS.put("event:" + event.id, "received", { expirationTtl: 60 * 60 * 24 * 180 });
+      }
     }
   }
 
@@ -364,6 +480,16 @@ export default {
       return getOrder(request, env, url);
     }
     if (path === "/api/download" && request.method === "GET") {
+      const token = url.searchParams.get("token");
+      if (token) {
+        const grant = await verifyDownloadToken(token, env);
+        if (!grant) return new Response("This download link is invalid or has expired.", { status: 403 });
+        const downloadUrl = new URL(request.url);
+        downloadUrl.searchParams.set("session_id", grant.session_id);
+        downloadUrl.searchParams.set("product_id", grant.product_id);
+        downloadUrl.searchParams.delete("token");
+        return downloadProduct(request, env, downloadUrl);
+      }
       return downloadProduct(request, env, url);
     }
     return response(request, env, { error: "Not found." }, 404);
