@@ -94,7 +94,7 @@ section { padding: 3.5rem 0; }
 .cta { text-align: center; }
 .site-footer { padding: 2.5rem 0; border: 0; border-top: 0; }
 .site-footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; }
-.site-footer img { width: 100px; height: 100px; object-fit: contain; background: var(--paper); border: 0; }
+.site-footer img { width: 150px; height: 150px; object-fit: contain; background: transparent; border: 0; }
 
 /* Homepage and shared navigation */
 .home-page { background: #f7f8fb; color: #050505; font-family: Georgia,"Times New Roman",serif; overflow-x: hidden; }
