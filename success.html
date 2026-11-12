@@ -33,6 +33,20 @@
     <div data-order-details></div>
     <p><a class="btn alt" href="shop.html">Continue shopping</a></p>
   </main>
+  <div class="cart-overlay" data-cart-overlay hidden></div>
+<aside class="cart-drawer" data-cart-drawer hidden role="dialog" aria-modal="true" aria-labelledby="cart-title">
+  <div class="cart-drawer-head">
+    <h2 id="cart-title">Your bag</h2>
+    <button class="cart-close" type="button" data-cart-close aria-label="Close shopping cart">×</button>
+  </div>
+  <div class="cart-items" data-cart-items><p class="cart-empty">Your bag is empty.</p></div>
+  <div class="cart-summary">
+    <div class="cart-total-row"><strong>Subtotal</strong><strong data-cart-total>$0.00</strong></div>
+    <p>Shipping and any applicable taxes are calculated securely at checkout.</p>
+    <button class="btn cart-checkout" type="button" data-checkout disabled>Checkout securely</button>
+    <p class="cart-feedback" data-cart-feedback role="status"></p>
+  </div>
+</aside>
   <script src="store.js" defer></script>
 </body>
 </html>
