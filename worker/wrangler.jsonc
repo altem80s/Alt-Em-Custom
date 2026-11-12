@@ -1,0 +1,36 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "alt-em-store-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-11",
+  "workers_dev": false,
+  "routes": [
+    {
+      "pattern": "api.altemcustom.com",
+      "custom_domain": true
+    }
+  ],
+  "vars": {
+    "SITE_URL": "https://altemcustom.com",
+    "ALLOWED_ORIGINS": "https://altemcustom.com,https://www.altemcustom.com",
+    "SHIPPING_COUNTRIES": "US",
+    "ENABLE_AUTOMATIC_TAX": "false"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "ORDERS"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "PATTERN_FILES",
+      "bucket_name": "alt-em-pattern-files"
+    }
+  ],
+  "secrets": {
+    "required": [
+      "STRIPE_SECRET_KEY",
+      "STRIPE_WEBHOOK_SECRET"
+    ]
+  }
+}
