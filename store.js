@@ -56,8 +56,10 @@
     const notice = document.querySelector("[data-store-notice]");
     if (!grid) return;
 
-    const availableCount = products.filter((product) => product.available).length;
-    grid.innerHTML = products.map((product) => {
+    const kindFilter = grid.getAttribute("data-product-kind") || "all";
+    const visibleProducts = products.filter((product) => kindFilter === "all" || product.kind === kindFilter);
+    const availableCount = visibleProducts.filter((product) => product.available).length;
+    grid.innerHTML = visibleProducts.map((product) => {
       const price = product.available ? formatMoney(product.amount, product.currency) : "";
       const action = product.available
         ? '<button class="btn store-add" type="button" data-add-to-cart="' + escapeHtml(product.id) + '">Add to bag</button>'
@@ -74,8 +76,10 @@
       '</article>';
     }).join("");
 
-    if (!products.length) {
-      grid.innerHTML = '<p class="store-empty">The shop catalogue is being prepared. Please check back soon.</p>';
+    if (!visibleProducts.length) {
+      grid.innerHTML = kindFilter === "digital"
+        ? '<p class="store-empty">No downloadable patterns are published yet. New patterns will appear here when they are ready.</p>'
+        : '<p class="store-empty">The shop catalogue is being prepared. Please check back soon.</p>';
     }
     if (notice) {
       notice.textContent = availableCount
