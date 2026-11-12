@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Alt Em Custom order confirmation.">
+  <link rel="icon" type="image/svg+xml" href="/Alt-Em-Custom/LogoTB-favicon.svg?v=1">
+  <link rel="stylesheet" href="styles.css">
+  <title>Order confirmation | Alt Em Custom</title>
+</head>
+<body class="inner-page success-page" data-success-page>
+  <header class="home-header">
+    <a class="home-brand" href="index.html" aria-label="Alt Em Custom home">
+      <img src="LayLogoTB.jpg" alt="Alt Em Custom logo">
+    </a>
+    <nav class="home-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="patterns.html">Patterns</a>
+    </nav>
+    <div class="home-header-icons">
+      <span class="header-icon header-search" aria-hidden="true"></span>
+      <span class="header-icon header-account" aria-hidden="true"></span>
+      <button class="header-icon header-bag cart-open" type="button" data-cart-open aria-label="Open shopping cart">
+        <span class="cart-count" data-cart-count hidden>0</span>
+      </button>
+    </div>
+  </header>
+  <main class="success-wrap">
+    <p class="eyebrow">Alt Em Custom</p>
+    <h1>Thank you for your order</h1>
+    <p data-order-status role="status">Checking your payment…</p>
+    <div data-order-details></div>
+    <p><a class="btn alt" href="shop.html">Continue shopping</a></p>
+  </main>
+  <script src="store.js" defer></script>
+</body>
+</html>
