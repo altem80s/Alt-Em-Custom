@@ -265,7 +265,7 @@ section { padding: 3.5rem 0; }
 .home-feature-callout {
     position: absolute;
     z-index: 3;
-    top: 8%;
+    top: 15%;
     left: 52%;
     width: max-content;
     max-width: 42%;
@@ -274,7 +274,7 @@ section { padding: 3.5rem 0; }
 }
 .home-feature-callout h2 {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Georgia, "Times New Roman", serif;
     font-size: clamp(1.6rem, 2.6vw, 2.4rem);
     font-weight: 400;
     line-height: 1.2;
