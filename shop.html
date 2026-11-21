@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Shop Alt Em Custom — limited edition handmade products.">
     <link rel="icon" type="image/png" href="/logo.png">
-    <link rel="stylesheet" href="styles.css?v=11">
+    <link rel="stylesheet" href="styles.css?v=12">
     <title>Shop | Alt Em Custom</title>
 </head>
 <body class="inner-page shop-page">
@@ -38,6 +38,32 @@
             <img src="Image5noBG.png" alt="Three models wearing Alt Em Custom gothic fashion pieces">
         </div>
     </section>
+
+    <section class="shop-products" aria-labelledby="products-heading">
+        <h2 id="products-heading">Products:</h2>
+        <article class="shop-product" aria-label="The Wrap Top">
+            <div class="shop-product-controls">
+                <h3>The Wrap Top</h3>
+                <button class="pose-button" id="change-pose" type="button">Change pose</button>
+                <label class="variant-label" for="wrap-top-variant">See it in:</label>
+                <select id="wrap-top-variant" class="variant-select" aria-label="Choose a Wrap Top color">
+                    <option value="" selected>Choose a color</option>
+                    <option value="green">Forest Green</option>
+                    <option value="black">Black</option>
+                    <option value="orange">Orange Velvet</option>
+                    <option value="red">Red</option>
+                </select>
+            </div>
+            <div class="shop-product-image">
+                <img id="wrap-top-image" src="AnnaPose1.png" alt="The Wrap Top in lace black, pose 1">
+            </div>
+            <div class="shop-product-status" aria-live="polite">
+                <p class="availability-status" id="wrap-top-status">Sold Out</p>
+                <a class="product-waitlist-link" href="mailto:contact@altemcustom.com?subject=The%20Wrap%20Top%20Waitlist">Join the waitlist</a>
+                <a class="product-pattern-link" href="patterns.html">Buy the pattern</a>
+            </div>
+        </article>
+    </section>
 </main>
 
 <footer class="site-footer noir">
@@ -61,6 +87,45 @@
     <p class="cart-feedback" data-cart-feedback role="status"></p>
   </div>
 </aside>
+<script>
+(() => {
+  const poseSets = {
+    lace: ["AnnaPose1.png", "AnnaPose2.png", "AnnaPose3.png", "AnnaPose4.png", "AnnaPose5.png"],
+    green: ["GreenPose1.png", "GreenPose2.png", "GreenPose3.png"],
+    black: ["BlackPose1.png", "BlackPose2.png"],
+    orange: ["OrangePose1.png", "OrangePose2.png"],
+    red: ["RedPose1.png", "RedPose2.png", "RedPose3.png"]
+  };
+  const variantNames = {
+    lace: "lace black",
+    green: "forest green",
+    black: "black",
+    orange: "orange velvet",
+    red: "red"
+  };
+  const image = document.getElementById("wrap-top-image");
+  const selector = document.getElementById("wrap-top-variant");
+  const changePose = document.getElementById("change-pose");
+  let currentSet = "lace";
+  let poseIndex = 0;
+
+  function showPose() {
+    const filename = poseSets[currentSet][poseIndex];
+    image.src = filename;
+    image.alt = "The Wrap Top in " + variantNames[currentSet] + ", pose " + (poseIndex + 1);
+  }
+  selector.addEventListener("change", () => {
+    currentSet = selector.value || "lace";
+    poseIndex = 0;
+    showPose();
+  });
+  changePose.addEventListener("click", () => {
+    const poses = poseSets[currentSet];
+    poseIndex = (poseIndex + 1) % poses.length;
+    showPose();
+  });
+})();
+</script>
 <script src="store.js" defer></script>
 </body>
 </html>
