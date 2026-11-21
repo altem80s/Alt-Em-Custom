@@ -479,3 +479,108 @@ section { padding: 3.5rem 0; }
         height: min(440px, 62vh);
     }
 }
+
+
+/* Shop product showcase */
+.shop-products {
+    padding: 1.5rem 2% 4rem;
+    background: #fff;
+}
+.shop-products > h2 {
+    margin: 0 0 .7rem;
+    font: 400 clamp(1.5rem, 2.5vw, 2rem)/1.2 Georgia, "Times New Roman", serif;
+}
+.shop-product {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(220px, .9fr) minmax(180px, 1fr);
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    width: min(850px, 90%);
+    min-height: 410px;
+    margin: 0 auto;
+}
+.shop-product-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    text-align: center;
+}
+.shop-product-controls h3 {
+    margin: 0 0 1rem;
+    font: 400 clamp(1.7rem, 2.6vw, 2.2rem)/1.2 Georgia, "Times New Roman", serif;
+    white-space: nowrap;
+}
+.pose-button {
+    padding: .55rem 1rem;
+    min-width: 122px;
+    border: 1px solid #111;
+    border-radius: 0;
+    background: #fff;
+    color: #111;
+    font: 1rem Georgia, "Times New Roman", serif;
+    cursor: pointer;
+}
+.pose-button:hover { background: #111; color: #fff; }
+.variant-label {
+    margin: 1rem 0 .25rem;
+    font: 1rem Georgia, "Times New Roman", serif;
+}
+.variant-select {
+    width: min(190px, 100%);
+    padding: .35rem .5rem;
+    border: 1px solid #777;
+    border-radius: 0;
+    background: #fff;
+    color: #111;
+    font: .95rem Georgia, "Times New Roman", serif;
+}
+.shop-product-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+    height: 410px;
+}
+.shop-product-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+.shop-product-status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: .2rem;
+    font-family: Georgia, "Times New Roman", serif;
+}
+.availability-status {
+    margin: 0 0 .2rem;
+    font: italic 400 clamp(1.6rem, 2.5vw, 2rem)/1.2 Georgia, "Times New Roman", serif;
+}
+.product-waitlist-link, .product-pattern-link {
+    color: #111;
+    font-size: .95rem;
+    text-underline-offset: 2px;
+}
+@media (max-width: 700px) {
+    .shop-products { padding: 1.5rem 5% 3rem; }
+    .shop-product {
+        width: 100%;
+        min-height: 0;
+        grid-template-columns: 1fr;
+        gap: .6rem;
+    }
+    .shop-product-controls { order: 1; }
+    .shop-product-image { order: 2; height: min(430px, 70vh); }
+    .shop-product-status {
+        order: 3;
+        align-items: center;
+        padding-bottom: 1rem;
+    }
+    .shop-product-controls h3 { white-space: normal; }
+}
