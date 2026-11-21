@@ -59,7 +59,7 @@
             </div>
             <div class="shop-product-status" aria-live="polite">
                 <p class="availability-status" id="wrap-top-status">Sold Out</p>
-                <a class="product-waitlist-link" href="#">Join the waitlist</a>
+                <a class="product-waitlist-link" href="#" id="open-waitlist">Join the waitlist</a>
                 <a class="product-pattern-link" href="patterns.html">Buy the pattern</a>
             </div>
         </article>
@@ -73,7 +73,33 @@
     </div>
 </footer>
 
-<div class="cart-overlay" data-cart-overlay hidden></div>
+
+<div class="waitlist-modal" id="waitlist-modal" hidden>
+  <div class="waitlist-backdrop" data-close-waitlist></div>
+  <section class="waitlist-dialog" role="dialog" aria-modal="true" aria-labelledby="waitlist-title">
+    <button class="waitlist-close" type="button" aria-label="Close waitlist form" data-close-waitlist>×</button>
+    <h2 id="waitlist-title">Join the Wrap Top Waitlist</h2>
+    <p>Leave your details and we'll keep you in mind for the next restock.</p>
+    <form id="waitlist-form">
+      <label for="waitlist-name">Name</label>
+      <input id="waitlist-name" name="name" type="text" autocomplete="name" required maxlength="120">
+      <label for="waitlist-email">Email</label>
+      <input id="waitlist-email" name="email" type="email" autocomplete="email" required maxlength="254">
+      <label for="waitlist-color">Color preference</label>
+      <select id="waitlist-color" name="color">
+        <option value="Lace Black">Lace Black</option>
+        <option value="Forest Green">Forest Green</option>
+        <option value="Black">Black</option>
+        <option value="Orange Velvet">Orange Velvet</option>
+        <option value="Red">Red</option>
+        <option value="Any color">Any color</option>
+      </select>
+      <button class="pose-button waitlist-submit" id="waitlist-submit" type="submit">Join waitlist</button>
+      <p class="waitlist-feedback" id="waitlist-feedback" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+</div>
+\n<div class="cart-overlay" data-cart-overlay hidden></div>
 <aside class="cart-drawer" data-cart-drawer hidden role="dialog" aria-modal="true" aria-labelledby="cart-title">
   <div class="cart-drawer-head">
     <h2 id="cart-title">Your bag</h2>
@@ -126,6 +152,67 @@
   });
 })();
 </script>
-<script src="store.js" defer></script>
+
+<script>
+(() => {
+  const endpoint = "https://script.google.com/macros/s/AKfycbylIDF5DnjZxOT13nlUp-WSv2PLXB8STOSV88wfikfZrwM_QGAKBavjRGovjbuObH8Ctg/exec";
+  const modal = document.getElementById("waitlist-modal");
+  const form = document.getElementById("waitlist-form");
+  const feedback = document.getElementById("waitlist-feedback");
+  const submit = document.getElementById("waitlist-submit");
+  const open = document.getElementById("open-waitlist");
+  const colorSelect = document.getElementById("wrap-top-variant");
+
+  function closeModal() {
+    modal.hidden = true;
+    document.body.classList.remove("waitlist-open");
+  }
+  open.addEventListener("click", (event) => {
+    event.preventDefault();
+    const selected = colorSelect.value;
+    const colorNames = { "": "Lace Black", green: "Forest Green", black: "Black", orange: "Orange Velvet", red: "Red" };
+    document.getElementById("waitlist-color").value = colorNames[selected] || "Lace Black";
+    modal.hidden = false;
+    document.body.classList.add("waitlist-open");
+    document.getElementById("waitlist-name").focus();
+  });
+  modal.querySelectorAll("[data-close-waitlist]").forEach((node) => node.addEventListener("click", closeModal));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !modal.hidden) closeModal();
+  });
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    submit.disabled = true;
+    submit.textContent = "Submitting…";
+    feedback.textContent = "";
+    const data = {
+      name: form.elements.name.value.trim(),
+      email: form.elements.email.value.trim(),
+      color: form.elements.color.value
+    };
+    try {
+      // Apps Script's web app does not expose CORS response headers.
+      // text/plain avoids a browser preflight; Apps Script parses the JSON body.
+      await fetch(endpoint, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(data)
+      });
+      form.reset();
+      feedback.textContent = "Thanks! Your waitlist request has been sent. If you have already signed up with this email, you may already be on the list.";
+      feedback.classList.add("is-success");
+    } catch (error) {
+      feedback.textContent = "We couldn't send your signup. Please check your connection and try again.";
+      feedback.classList.remove("is-success");
+    } finally {
+      submit.disabled = false;
+      submit.textContent = "Join waitlist";
+    }
+  });
+})();
+</script>
+\n<script src="store.js" defer></script>
 </body>
 </html>
