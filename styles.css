@@ -614,3 +614,71 @@ section { padding: 3.5rem 0; }
     }
     .shop-product-image { height: min(560px, 78vh); }
 }
+
+
+/* Wrap Top waitlist modal */
+.waitlist-modal[hidden] { display: none !important; }
+.waitlist-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+}
+.waitlist-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.58);
+}
+.waitlist-dialog {
+    position: relative;
+    z-index: 1;
+    width: min(440px, 100%);
+    max-height: min(90vh, 700px);
+    overflow-y: auto;
+    padding: 2rem;
+    background: #fff;
+    color: #111;
+    border: 1px solid #bbb;
+    box-shadow: 0 12px 45px rgba(0,0,0,.2);
+    font-family: Georgia, "Times New Roman", serif;
+}
+.waitlist-dialog h2 {
+    margin: 0 2rem .6rem 0;
+    font-size: 1.8rem;
+    font-weight: 400;
+}
+.waitlist-dialog > p { margin: 0 0 1.4rem; line-height: 1.45; }
+.waitlist-close {
+    position: absolute;
+    top: .55rem;
+    right: .8rem;
+    border: 0;
+    background: transparent;
+    color: #111;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+}
+.waitlist-dialog form {
+    display: flex;
+    flex-direction: column;
+    gap: .45rem;
+}
+.waitlist-dialog label { margin-top: .45rem; }
+.waitlist-dialog input, .waitlist-dialog select {
+    width: 100%;
+    min-height: 42px;
+    padding: .55rem .65rem;
+    border: 1px solid #888;
+    border-radius: 0;
+    background: #fff;
+    color: #111;
+    font: 1rem Georgia, "Times New Roman", serif;
+}
+.waitlist-submit { margin-top: .9rem; }
+.waitlist-submit:disabled { opacity: .6; cursor: wait; }
+.waitlist-feedback { min-height: 1.2em; margin: .5rem 0 0; line-height: 1.4; }
+.waitlist-feedback.is-success { font-weight: 600; }
+body.waitlist-open { overflow: hidden; }
