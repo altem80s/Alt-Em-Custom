@@ -682,3 +682,15 @@ section { padding: 3.5rem 0; }
 .waitlist-feedback { min-height: 1.2em; margin: .5rem 0 0; line-height: 1.4; }
 .waitlist-feedback.is-success { font-weight: 600; }
 body.waitlist-open { overflow: hidden; }
+
+.waitlist-dialog textarea {
+    width: 100%;
+    min-height: 105px;
+    padding: .6rem .65rem;
+    border: 1px solid #888;
+    border-radius: 0;
+    background: #fff;
+    color: #111;
+    resize: vertical;
+    font: 1rem/1.4 Georgia, "Times New Roman", serif;
+}
