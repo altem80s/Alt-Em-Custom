@@ -154,6 +154,7 @@ section { padding: 3.5rem 0; }
     .home-header-icons { display: none; }
     .home-hero { width: calc(100% - 16px); min-height: 650px; margin: 8px 8px 0; }
     .home-hero-title { left: 16%; bottom: 9%; font-size: clamp(4rem,17vw,6rem); }
+    .home-hero-title { -webkit-text-stroke: 2px #fff; paint-order: stroke fill; text-shadow: 0 0 2px #fff; }
     .home-walker { inset: 82px 0 0; justify-content: flex-end; }
     .home-walker img { height: 86%; max-width: 82%; }
     .featured-product { width: calc(100% - 16px); min-height: 520px; margin: 0 8px 18px; }
