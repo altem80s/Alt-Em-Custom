@@ -390,3 +390,92 @@ section { padding: 3.5rem 0; }
     text-decoration: underline;
     text-underline-offset: 2px;
 }
+
+
+/* Shop page: clean editorial two-column hero */
+.shop-page {
+    min-height: 100vh;
+    background: #fff;
+}
+.shop-page .home-header {
+    margin: 16px 18px 0;
+    min-height: 82px;
+    padding: 10px 24px;
+    border: 1px solid #d2d2d2;
+    border-bottom: 0;
+}
+.shop-page .shop-main {
+    margin: 0 18px;
+    border: 1px solid #d2d2d2;
+    border-top: 0;
+}
+.shop-hero {
+    width: min(920px, 86%);
+    min-height: min(520px, calc(100vh - 120px));
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    padding: 18px 0 34px;
+}
+.shop-hero-copy {
+    text-align: center;
+    min-width: 0;
+}
+.shop-hero-copy h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(4.2rem, 8vw, 6rem);
+    font-weight: 400;
+    line-height: .98;
+    letter-spacing: -.045em;
+}
+.shop-hero-subtitle {
+    margin: .45rem 0 2.1rem;
+    font-size: clamp(.95rem, 1.5vw, 1.2rem);
+    font-style: italic;
+    line-height: 1.3;
+}
+.shop-hero-description {
+    max-width: 390px;
+    margin: 0 auto;
+    font-size: clamp(.92rem, 1.3vw, 1.05rem);
+    line-height: 1.25;
+}
+.shop-hero-art {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+}
+.shop-hero-art img {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    height: min(440px, 68vh);
+    object-fit: contain;
+    object-position: center;
+}
+.shop-page .site-footer { margin-top: 2rem; }
+@media (max-width: 700px) {
+    .shop-page .home-header {
+        margin: 8px 8px 0;
+        padding: 8px 10px;
+    }
+    .shop-page .shop-main { margin: 0 8px; }
+    .shop-hero {
+        width: 88%;
+        min-height: 0;
+        grid-template-columns: 1fr;
+        gap: .75rem;
+        padding: 2.8rem 0 2rem;
+    }
+    .shop-hero-copy h1 { font-size: clamp(4rem, 17vw, 5.5rem); }
+    .shop-hero-subtitle { margin-bottom: 1.4rem; }
+    .shop-hero-description { max-width: 420px; }
+    .shop-hero-art img {
+        width: min(100%, 380px);
+        height: min(440px, 62vh);
+    }
+}
