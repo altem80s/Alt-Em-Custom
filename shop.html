@@ -85,7 +85,7 @@
       <input id="waitlist-name" name="name" type="text" autocomplete="name" required maxlength="120">
       <label for="waitlist-email">Email</label>
       <input id="waitlist-email" name="email" type="email" autocomplete="email" required maxlength="254">
-      <label for="waitlist-color">Color preference</label>
+      <label for="waitlist-color">Color request</label>
       <select id="waitlist-color" name="color">
         <option value="Lace Black">Lace Black</option>
         <option value="Forest Green">Forest Green</option>
@@ -94,6 +94,13 @@
         <option value="Red">Red</option>
         <option value="Any color">Any color</option>
       </select>
+      <label for="waitlist-sleeve">Sleeve type</label>
+      <select id="waitlist-sleeve" name="sleeve" required>
+        <option value="Full sleeve">Full sleeve</option>
+        <option value="Half sleeve">Half sleeve</option>
+      </select>
+      <label for="waitlist-notes">Notes / special requests</label>
+      <textarea id="waitlist-notes" name="notes" rows="4" maxlength="1000" placeholder="Any additional details or requests?"></textarea>
       <button class="pose-button waitlist-submit" id="waitlist-submit" type="submit">Join waitlist</button>
       <p class="waitlist-feedback" id="waitlist-feedback" role="status" aria-live="polite"></p>
     </form>
@@ -189,7 +196,9 @@
     const data = {
       name: form.elements.name.value.trim(),
       email: form.elements.email.value.trim(),
-      color: form.elements.color.value
+      color: form.elements.color.value,
+      sleeve: form.elements.sleeve.value,
+      notes: form.elements.notes.value.trim()
     };
     try {
       // Apps Script's web app does not expose CORS response headers.
