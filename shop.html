@@ -3,14 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Shop Alt Em Custom handmade clothing, retro-inspired pieces, and digital sewing patterns.">
-     <link rel="icon" type="image/png" href="/logo.png">
-    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Shop Alt Em Custom — limited edition handmade products.">
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="stylesheet" href="styles.css?v=11">
     <title>Shop | Alt Em Custom</title>
 </head>
-
-<body class="inner-page">
-
+<body class="inner-page shop-page">
 <header class="home-header">
     <a class="home-brand" href="index.html" aria-label="Alt Em Custom home">
         <img src="LayLogoTB.jpg" alt="Alt Em Custom logo">
@@ -18,7 +16,7 @@
     <nav class="home-nav" aria-label="Main navigation">
         <a href="index.html">Home</a>
         <a href="shop.html" aria-current="page">Shop</a>
-        <a href="patterns.html">Patterns</a>
+        <a href="patterns.html">Portfolio</a>
     </nav>
     <div class="home-header-icons">
         <span class="header-icon header-search" aria-hidden="true"></span>
@@ -29,27 +27,17 @@
     </div>
 </header>
 
-<main>
-
-    <!-- SHOP INTRODUCTION -->
-    <section class="page-intro">
-        <div class="wrap">
-            <p class="eyebrow">The Alt Em collection</p>
-            <h1>Shop</h1>
-            <p class="lede">
-                Handmade physical pieces.
-            </p>
+<main class="shop-main">
+    <section class="shop-hero" aria-labelledby="shop-title">
+        <div class="shop-hero-copy">
+            <h1 id="shop-title">SHOP</h1>
+            <p class="shop-hero-subtitle">Limited Edition Handmade Products</p>
+            <p class="shop-hero-description">Every physical piece is currently handmade by the designer. Items are premade and dropped in small batches. Join the waitlist for a sold out product and receive first priority for the next restock.</p>
+        </div>
+        <div class="shop-hero-art">
+            <img src="Image5noBG.png" alt="Three models wearing Alt Em Custom gothic fashion pieces">
         </div>
     </section>
-
-    <section class="shop-coming-soon" aria-labelledby="shop-coming-title">
-        <div class="wrap">
-            <p class="eyebrow">Coming Soon</p>
-            <h2 id="shop-coming-title">Physical Products Coming Soon</h2>
-            <p>Handmade Alt Em Custom pieces are in the works. Check back soon for the collection.</p>
-        </div>
-    </section>
-
 </main>
 
 <footer class="site-footer noir">
@@ -59,16 +47,13 @@
     </div>
 </footer>
 
-
 <div class="cart-overlay" data-cart-overlay hidden></div>
 <aside class="cart-drawer" data-cart-drawer hidden role="dialog" aria-modal="true" aria-labelledby="cart-title">
   <div class="cart-drawer-head">
     <h2 id="cart-title">Your bag</h2>
     <button class="cart-close" type="button" data-cart-close aria-label="Close shopping cart">×</button>
   </div>
-  <div class="cart-items" data-cart-items>
-    <p class="cart-empty">Your bag is empty.</p>
-  </div>
+  <div class="cart-items" data-cart-items><p class="cart-empty">Your bag is empty.</p></div>
   <div class="cart-summary">
     <div class="cart-total-row"><strong>Subtotal</strong><strong data-cart-total>$0.00</strong></div>
     <p>Shipping and any applicable taxes are calculated securely at checkout.</p>
@@ -76,7 +61,6 @@
     <p class="cart-feedback" data-cart-feedback role="status"></p>
   </div>
 </aside>
-
 <script src="store.js" defer></script>
 </body>
 </html>
