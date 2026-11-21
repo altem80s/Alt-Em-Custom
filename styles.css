@@ -369,3 +369,25 @@ section { padding: 3.5rem 0; }
     }
     .gallery-slot { min-height: 0; }
 }
+
+
+/* Gallery photo credits */
+.gallery-caption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 8px 7px;
+    background: rgba(255,255,255,.94);
+    color: #111;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(.62rem, .8vw, .78rem);
+    line-height: 1.35;
+    text-align: left;
+}
+.gallery-caption a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
