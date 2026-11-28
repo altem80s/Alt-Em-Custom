@@ -12,6 +12,7 @@
   ],
   "vars": {
     "SITE_URL": "https://altemcustom.com",
+    "API_URL": "https://api.altemcustom.com",
     "ALLOWED_ORIGINS": "https://altemcustom.com,https://www.altemcustom.com,https://altem80s.github.io",
     "SHIPPING_COUNTRIES": "US",
     "ENABLE_AUTOMATIC_TAX": "false"
@@ -29,7 +30,10 @@
   ],
   "secrets": {
     "required": [
-      "STRIPE_SECRET_KEY"
+      "STRIPE_SECRET_KEY",
+      "STRIPE_WEBHOOK_SECRET",
+      "DOWNLOAD_LINK_SECRET",
+      "RESEND_API_KEY"
     ]
   }
 }
