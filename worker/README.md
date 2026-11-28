@@ -62,10 +62,10 @@ For each product you are ready to sell:
 
 1. Create the Product and a one-time Price in Stripe Dashboard (live mode only once the product/price has been confirmed).
 2. Copy the Price ID (starts with `price_`).
-3. In `catalog.js`, set the correct `priceId` and set `active: true`.
-4. For a digital product, set `kind: "digital"` and set `downloadKey` to a private object key, for example `patterns/my-shirt-pattern.pdf`.
-5. For physical products, create a shipping rate in Stripe Dashboard, then set `SHIPPING_RATE_ID` in Wrangler vars. The default allowed shipping country is US; change `SHIPPING_COUNTRIES` before selling elsewhere.
-6. Upload the matching PDF into the private R2 bucket under the exact key used in `downloadKey`. Do not put paid PDFs in the public GitHub Pages repository.
+3. In `catalog.js`, set the verified one-time Stripe `priceId` and `active: true`.
+4. For a digital product, set `kind: "digital"` and configure a `downloadFiles` array. Each entry needs a stable `id`, customer-facing `label`, private R2 `key`, and download `filename`.
+5. Upload every paid PDF to the private R2 bucket using the exact `key` configured for that file. Do not put paid PDFs in the public GitHub Pages repository.
+6. For physical products, create a shipping rate in Stripe Dashboard, then set `SHIPPING_RATE_ID` in Wrangler vars. The default allowed shipping country is US; change `SHIPPING_COUNTRIES` before selling elsewhere.
 7. Deploy again with `npx wrangler deploy`.
 
 The site reads live availability and prices from the Worker. Checkout line items always use the server-side Stripe Price IDs, not prices sent from the browser.
@@ -80,4 +80,12 @@ Automatic tax is off by default. Before turning it on, configure Stripe Tax and 
 - Webhook signatures are checked against the unmodified request body and timestamp.
 - Download requests retrieve the Checkout Session from Stripe, require `payment_status=paid`, and confirm the purchased Stripe Price ID before reading from private R2.
 - The order KV stores a minimal payment record for 180 days; it does not store addresses or full card details.
-- Customers receive the confirmation/download page after checkout. Automated delivery emails are not configured yet; that requires an email provider and sender-domain setup.
+- Digital products can expose multiple separate files on the order confirmation page. The Worker can also email expiring download links through Resend. Configure the following Worker secrets before enabling paid digital products:
+
+```bash
+npx wrangler secret put STRIPE_WEBHOOK_SECRET
+npx wrangler secret put DOWNLOAD_LINK_SECRET
+npx wrangler secret put RESEND_API_KEY
+```
+
+Set `EMAIL_FROM` as a Worker variable to an address verified in Resend (for example, a sender on your own domain). Keep `STRIPE_SECRET_KEY` and all three values above in Worker secrets; never place them in browser JavaScript or the public repository. The R2 bucket must remain private.
