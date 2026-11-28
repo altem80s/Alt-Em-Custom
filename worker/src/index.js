@@ -436,7 +436,6 @@ async function stripeWebhook(request, env) {
         });
       }
       const session = await retrieveSession(env, eventSession.id);
-      const emailed = await sendDigitalPurchaseEmail(env, session);
       if (env.ORDERS) {
         const record = {
           session_id: session.id,
@@ -444,7 +443,7 @@ async function stripeWebhook(request, env) {
           amount_total: session.amount_total || 0,
           currency: session.currency || "usd",
           stripe_event_id: event.id,
-          digital_email_sent: emailed,
+          delivery_method: "secure_checkout_confirmation",
           created: event.created || Math.floor(Date.now() / 1000)
         };
         await env.ORDERS.put("order:" + session.id, JSON.stringify(record), { expirationTtl: 60 * 60 * 24 * 180 });
