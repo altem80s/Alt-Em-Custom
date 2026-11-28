@@ -32,8 +32,7 @@
     "required": [
       "STRIPE_SECRET_KEY",
       "STRIPE_WEBHOOK_SECRET",
-      "DOWNLOAD_LINK_SECRET",
-      "RESEND_API_KEY"
+      "DOWNLOAD_LINK_SECRET"
     ]
   }
 }
