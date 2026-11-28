@@ -8,7 +8,7 @@ export const PRODUCTS = [
     description: "24-page US Letter print-at-home pattern with illustrated sewing instructions and a video tutorial.",
     kind: "digital",
     active: false,
-    priceId: null,
+    priceId: "price_1UansHRoBNJeoJzW41OeXPlX",
     downloadFiles: [
       {
         id: "pattern",
