@@ -204,7 +204,10 @@ async function getOrder(request, env, url) {
         name: product.name,
         quantity: line.quantity || 1,
         kind: product.kind,
-        downloadAvailable: product.kind === "digital" && Boolean(product.downloadKey)
+        downloadAvailable: product.kind === "digital" && Array.isArray(product.downloadFiles) && product.downloadFiles.length > 0,
+        downloadFiles: product.kind === "digital" && Array.isArray(product.downloadFiles)
+          ? product.downloadFiles.map((file) => ({ id: file.id, label: file.label }))
+          : []
       };
     }).filter(Boolean);
 
@@ -224,12 +227,16 @@ async function getOrder(request, env, url) {
 async function downloadProduct(request, env, url) {
   const sessionId = url.searchParams.get("session_id");
   const productId = cleanText(url.searchParams.get("product_id"), 80);
-  if (!validSessionId(sessionId) || !productId) {
+  const fileId = cleanText(url.searchParams.get("file_id"), 80);
+  if (!validSessionId(sessionId) || !productId || !fileId) {
     return new Response("A valid paid order is required.", { status: 400 });
   }
 
   const product = PRODUCTS.find((item) => item.id === productId);
-  if (!product || product.kind !== "digital" || !product.priceId || !product.downloadKey) {
+  const file = product && Array.isArray(product.downloadFiles)
+    ? product.downloadFiles.find((item) => item.id === fileId)
+    : null;
+  if (!product || product.kind !== "digital" || !product.priceId || !file || !file.key || !file.filename) {
     return new Response("This download is not configured.", { status: 404 });
   }
   if (!env.PATTERN_FILES) return new Response("Digital file storage is not configured.", { status: 503 });
@@ -245,13 +252,14 @@ async function downloadProduct(request, env, url) {
     });
     if (!purchased) return new Response("This item is not part of the paid order.", { status: 403 });
 
-    const object = await env.PATTERN_FILES.get(product.downloadKey);
-    if (!object) return new Response("The pattern file has not been uploaded yet.", { status: 404 });
+    const object = await env.PATTERN_FILES.get(file.key);
+    if (!object) return new Response("The requested digital file has not been uploaded yet.", { status: 404 });
 
+    const safeFilename = String(file.filename).replace(/[\r\n"\\]/g, "").slice(0, 120);
     return new Response(object.body, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": "attachment; filename=\"" + product.id + ".pdf\"",
+        "Content-Disposition": "attachment; filename=\"" + safeFilename + "\"",
         "Cache-Control": "private, no-store",
         "X-Content-Type-Options": "nosniff"
       }
@@ -319,11 +327,12 @@ async function signDownloadPayload(payload, secret) {
   return base64UrlEncode(new Uint8Array(signature));
 }
 
-async function createDownloadToken(sessionId, productId, env) {
+async function createDownloadToken(sessionId, productId, fileId, env) {
   if (!env.DOWNLOAD_LINK_SECRET) throw new Error("Download link signing is not configured.");
   const payload = base64UrlEncode(new TextEncoder().encode(JSON.stringify({
     session_id: sessionId,
     product_id: productId,
+    file_id: fileId,
     expires: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60
   })));
   return payload + "." + await signDownloadPayload(payload, env.DOWNLOAD_LINK_SECRET);
@@ -341,7 +350,8 @@ async function verifyDownloadToken(token, env) {
   try {
     const data = JSON.parse(new TextDecoder().decode(base64UrlDecode(parts[0])));
     if (!validSessionId(data.session_id) || typeof data.product_id !== "string" ||
-        !Number.isInteger(data.expires) || data.expires < Math.floor(Date.now() / 1000)) return null;
+        typeof data.file_id !== "string" || !Number.isInteger(data.expires) ||
+        data.expires < Math.floor(Date.now() / 1000)) return null;
     return data;
   } catch (_) { return null; }
 }
@@ -351,7 +361,8 @@ async function sendDigitalPurchaseEmail(env, session) {
   const digitalItems = lines.map((line) => {
     const priceId = typeof line.price === "object" ? line.price.id : line.price;
     const product = PRODUCTS.find((item) => item.priceId === priceId);
-    return product && product.kind === "digital" && product.downloadKey ? product : null;
+    return product && product.kind === "digital" && Array.isArray(product.downloadFiles) &&
+      product.downloadFiles.length ? product : null;
   }).filter(Boolean);
   if (!digitalItems.length) return false;
   if (!env.RESEND_API_KEY || !env.EMAIL_FROM || !env.DOWNLOAD_LINK_SECRET) {
@@ -362,12 +373,14 @@ async function sendDigitalPurchaseEmail(env, session) {
 
   const links = [];
   for (const product of digitalItems) {
-    const token = await createDownloadToken(session.id, product.id, env);
-    links.push({
-      name: product.name,
-      url: (env.API_URL || "https://api.altemcustom.com").replace(/\\/+$/, "") +
-        "/api/download?token=" + encodeURIComponent(token)
-    });
+    for (const file of product.downloadFiles) {
+      const token = await createDownloadToken(session.id, product.id, file.id, env);
+      links.push({
+        name: product.name + " - " + file.label,
+        url: (env.API_URL || "https://api.altemcustom.com").replace(/\\/+$/, "") +
+          "/api/download?token=" + encodeURIComponent(token)
+      });
+    }
   }
   const htmlLinks = links.map((item) =>
     '<p style="margin:24px 0"><a href="' + item.url +
@@ -487,6 +500,7 @@ export default {
         const downloadUrl = new URL(request.url);
         downloadUrl.searchParams.set("session_id", grant.session_id);
         downloadUrl.searchParams.set("product_id", grant.product_id);
+        downloadUrl.searchParams.set("file_id", grant.file_id);
         downloadUrl.searchParams.delete("token");
         return downloadProduct(request, env, downloadUrl);
       }
