@@ -12,9 +12,9 @@ export const PRODUCTS = [
     downloadFiles: [
       {
         id: "pattern",
-        label: "US Letter sewing pattern",
-        key: "bell-sleeve-wrap-top-pattern.pdf",
-        filename: "Bell Sleeve Wrap Top Pattern.pdf"
+        label: "US Letter pattern PDF",
+        key: "US letter pattern pdf.pdf",
+        filename: "US letter pattern pdf.pdf"
       },
       {
         id: "instructions",
