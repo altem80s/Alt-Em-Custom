@@ -97,6 +97,22 @@
     }
   }
 
+  function renderPatternPurchase() {
+    const button = document.querySelector("[data-pattern-add]");
+    const priceNode = document.querySelector("[data-pattern-price]");
+    if (!button) return;
+
+    const product = products.find((item) => item.id === "bell-sleeve-wrap-top");
+    const available = Boolean(product && product.available);
+    button.disabled = !available;
+    button.textContent = available ? "Add to bag" : "Coming soon";
+    if (priceNode) {
+      priceNode.textContent = available
+        ? formatMoney(product.amount, product.currency)
+        : "Price coming soon";
+    }
+  }
+
   function currentCartItems() {
     return Object.entries(cart).map(([id, quantity]) => ({
       product: products.find((product) => product.id === id),
@@ -216,13 +232,18 @@
           (order.customer_email ? 'Receipt email: <strong>' + escapeHtml(order.customer_email) + '</strong><br>' : '') +
           'Order total: <strong>' + escapeHtml(total) + '</strong>' +
         '</p>' +
-        '<div class="order-items">' + (order.items || []).map((item) =>
-          '<div class="order-line"><span>' + escapeHtml(item.name) + ' × ' + item.quantity + '</span>' +
-          (item.downloadAvailable
-            ? '<a class="btn" href="' + API + '/download?session_id=' + encodeURIComponent(sessionId) + '&product_id=' + encodeURIComponent(item.id) + '">Download PDF</a>'
-            : '<span>We will prepare your order.</span>') +
-          '</div>'
-        ).join("") + '</div>';
+        '<div class="order-items">' + (order.items || []).map((item) => {
+          const downloads = (item.downloadFiles || []).map((file) =>
+            '<a class="btn" href="' + API + '/download?session_id=' + encodeURIComponent(sessionId) +
+            '&product_id=' + encodeURIComponent(item.id) + '&file_id=' + encodeURIComponent(file.id) +
+            '">Download ' + escapeHtml(file.label) + '</a>'
+          ).join("");
+          return '<div class="order-line"><span>' + escapeHtml(item.name) + ' × ' + item.quantity + '</span>' +
+            (downloads || (item.downloadAvailable
+              ? '<a class="btn" href="' + API + '/download?session_id=' + encodeURIComponent(sessionId) + '&product_id=' + encodeURIComponent(item.id) + '">Download PDF</a>'
+              : '<span>We will prepare your order.</span>')) +
+            '</div>';
+        }).join("") + '</div>';
       if (!order.items || !order.items.length) {
         details.innerHTML += '<p>Your payment was received. Contact us with your receipt if you need help with your order.</p>';
       }
@@ -302,10 +323,12 @@
       const result = await api("/products");
       products = Array.isArray(result.products) ? result.products : [];
       renderShop();
+      renderPatternPurchase();
       renderCart();
     } catch (_) {
       products = DRAFT_PRODUCTS;
       renderShop();
+      renderPatternPurchase();
       renderCart();
       const notice = document.querySelector("[data-store-notice]");
       if (notice) {
