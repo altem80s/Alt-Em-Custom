@@ -3,6 +3,28 @@
 // have been created in the Stripe Dashboard and verified.
 export const PRODUCTS = [
   {
+    id: "bell-sleeve-wrap-top",
+    name: "Bell Sleeve Wrap Top Sewing Pattern",
+    description: "24-page US Letter print-at-home pattern with illustrated sewing instructions and a video tutorial.",
+    kind: "digital",
+    active: false,
+    priceId: null,
+    downloadFiles: [
+      {
+        id: "pattern",
+        label: "US Letter sewing pattern",
+        key: "bell-sleeve-wrap-top-pattern.pdf",
+        filename: "Bell Sleeve Wrap Top Pattern.pdf"
+      },
+      {
+        id: "instructions",
+        label: "Illustrated sewing instructions",
+        key: "bell-sleeve-wrap-top-instructions.pdf",
+        filename: "Bell Sleeve Wrap Top Instructions.pdf"
+      }
+    ]
+  },
+  {
     id: "studded-leather-moto-vest",
     name: "Studded leather moto vest",
     description: "Black leather, silver studs, fully lined.",
